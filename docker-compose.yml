@@ -1,0 +1,22 @@
+name: mcpulsor
+
+services:
+#   -------- MCPulsor Server (localhost:8081) ---------------------
+  mcpulsor-server:
+    build:
+      context: .
+      dockerfile: mcpulsor-server/Dockerfile
+    container_name: mcpulsor-server
+    ports:
+      - "8888:8081"
+
+#   -------- Inspector for the HTTP server (UI -> localhost:6274) ---------------------
+  inspector-http:
+    image: ghcr.io/modelcontextprotocol/inspector:latest
+    container_name: mcp-inspector-http
+    environment:
+      HOST: "0.0.0.0"
+      ALLOWED_ORIGINS: "http://localhost:6274"
+    ports:
+      - "6274:6274"                # Inspector UI (http)
+      - "6277:6277"                # Inspector proxy (http)
